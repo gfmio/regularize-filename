@@ -1,7 +1,12 @@
 [package]
 name = "regularize-filename"
 version = "0.1.0"
-authors = ["Frédérique Mittelstaedt <git@gfm.io>"]
+description = "Regularize the names of your files according to your favourite naming convention"
+authors = ["Frédérique Mittelstaedt <git@gfm.io> (https://www.gfm.io)"]
+license = "MIT"
+documentation = "https://github.com/gfmio/regularize-filename"
+homepage = "https://github.com/gfmio/regularize-filename"
+repository = "https://github.com/gfmio/regularize-filename"
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
