@@ -150,23 +150,35 @@ fn main() -> std::io::Result<()> {
     for file in opts.files {
         let old_path = file.as_path();
         let parent = old_path.parent().unwrap().to_str().unwrap();
-        let stem = old_path.file_stem().unwrap().to_str().unwrap();
-        let extension = old_path.extension().unwrap().to_str().unwrap();
+        let stem = old_path.file_stem();
+        let extension = old_path.extension();
 
-        let formatted_filename = stem
-            .split(DOT)
-            .collect::<Vec<&str>>()
+        let new_extension;
+        if extension.is_some() {
+            new_extension = ".".to_owned() + &extension.unwrap().to_str().unwrap().to_lowercase();
+        } else {
+            new_extension = "".to_owned();
+        }
+
+        let formatted_filename;
+        if stem.is_some() {
+            formatted_filename = stem
+                .unwrap()
+                .to_str()
+                .unwrap()
+                .split(DOT)
+                .collect::<Vec<&str>>()
+                .iter()
+                .map(|&part| convert_filename(part, &mode))
+                .collect::<Vec<String>>()
+                .join(DOT);
+        } else {
+            formatted_filename = "".to_owned();
+        }
+
+        let new_path: PathBuf = vec![parent, &(formatted_filename + &new_extension)]
             .iter()
-            .map(|&part| convert_filename(part, &mode))
-            .collect::<Vec<String>>()
-            .join(DOT);
-
-        let new_path: PathBuf = vec![
-            parent,
-            &(formatted_filename + DOT + &extension.to_lowercase()),
-        ]
-        .iter()
-        .collect();
+            .collect();
 
         println!(
             "mv {} {}",
